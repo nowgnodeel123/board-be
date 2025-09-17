@@ -19,10 +19,18 @@ public class BoardService {
         Board board = Board.builder()
                 .title(requestDto.title())
                 .content(requestDto.content())
+                .category(requestDto.category())
                 .build();
 
         boardRepository.save(board);
 
         return ResponseEntity.ok().body("Board created successfully");
+    }
+
+    @Transactional
+    public ResponseEntity<String> deleteBoard(Long id) {
+        boardRepository.deleteById(id);
+
+        return ResponseEntity.ok().body("Board deleted successfully");
     }
 }
