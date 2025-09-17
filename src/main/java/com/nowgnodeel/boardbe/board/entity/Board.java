@@ -1,6 +1,7 @@
 package com.nowgnodeel.boardbe.board.entity;
 
 import com.nowgnodeel.boardbe.board.common.Category;
+import com.nowgnodeel.boardbe.board.dto.UpdateBoardRequestDto;
 import com.nowgnodeel.boardbe.comment.entity.Comment;
 import com.nowgnodeel.boardbe.global.entity.Timestamped;
 import jakarta.persistence.*;
@@ -34,4 +35,10 @@ public class Board extends Timestamped {
     @JoinColumn(name = "board_id")
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
+
+    public void patch(UpdateBoardRequestDto requestDto) {
+        this.title = requestDto.title();
+        this.content = requestDto.content();
+        this.category = requestDto.category();
+    }
 }
