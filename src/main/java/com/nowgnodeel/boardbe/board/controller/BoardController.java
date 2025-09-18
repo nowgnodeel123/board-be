@@ -1,10 +1,16 @@
 package com.nowgnodeel.boardbe.board.controller;
 
 import com.nowgnodeel.boardbe.board.dto.CreateBoardRequestDto;
+import com.nowgnodeel.boardbe.board.dto.CreateBoardResponseDto;
+import com.nowgnodeel.boardbe.board.dto.UpdateBoardRequestDto;
+import com.nowgnodeel.boardbe.board.dto.UpdateBoardResponseDto;
+import com.nowgnodeel.boardbe.board.entity.Board;
 import com.nowgnodeel.boardbe.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,12 +20,23 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<String> createBoard(@RequestBody CreateBoardRequestDto requestDto) {
-        return boardService.createBoard(requestDto);
+    public ResponseEntity<CreateBoardResponseDto> createBoard(@RequestBody CreateBoardRequestDto requestDto) {
+        Board createBoard = boardService.createBoard(requestDto);
+        CreateBoardResponseDto responseDto = CreateBoardResponseDto.from(createBoard);
+        URI location = URI.create("/boards/" + createBoard.getId());
+        return ResponseEntity.created(location).body(responseDto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBoard(@PathVariable Long id) {
-        return boardService.deleteBoard(id);
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+        boardService.deleteBoard(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UpdateBoardResponseDto> updateBoard(@PathVariable Long id, @RequestBody UpdateBoardRequestDto requestDto) {
+        Board updateBoard = boardService.updateBoard(id, requestDto);
+        UpdateBoardResponseDto responseDto = UpdateBoardResponseDto.from(updateBoard);
+        return ResponseEntity.ok(responseDto);
     }
 }
