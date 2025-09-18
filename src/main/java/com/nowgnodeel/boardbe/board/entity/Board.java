@@ -37,8 +37,14 @@ public class Board extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
     public void patch(UpdateBoardRequestDto requestDto) {
-        this.title = requestDto.title();
-        this.content = requestDto.content();
-        this.category = requestDto.category();
+        if (requestDto.title() != null) {
+            this.title = requestDto.title();
+        }
+        if (requestDto.content() != null) {
+            this.content = requestDto.content();
+        }
+        if (requestDto.category() != null) {
+            this.category = requestDto.category();
+        }
     }
 }
