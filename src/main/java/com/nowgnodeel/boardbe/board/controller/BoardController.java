@@ -1,12 +1,11 @@
 package com.nowgnodeel.boardbe.board.controller;
 
-import com.nowgnodeel.boardbe.board.dto.CreateBoardRequestDto;
-import com.nowgnodeel.boardbe.board.dto.CreateBoardResponseDto;
-import com.nowgnodeel.boardbe.board.dto.UpdateBoardRequestDto;
-import com.nowgnodeel.boardbe.board.dto.UpdateBoardResponseDto;
+import com.nowgnodeel.boardbe.board.dto.*;
 import com.nowgnodeel.boardbe.board.entity.Board;
 import com.nowgnodeel.boardbe.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +37,11 @@ public class BoardController {
         Board updateBoard = boardService.updateBoard(id, requestDto);
         UpdateBoardResponseDto responseDto = UpdateBoardResponseDto.from(updateBoard);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<GetBoardListResponseDto>> getBoardList(Pageable pageable) {
+        Page<GetBoardListResponseDto> getBoardList = boardService.getBoardList(pageable);
+        return ResponseEntity.ok(getBoardList);
     }
 }

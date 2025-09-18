@@ -1,10 +1,13 @@
 package com.nowgnodeel.boardbe.board.service;
 
 import com.nowgnodeel.boardbe.board.dto.CreateBoardRequestDto;
+import com.nowgnodeel.boardbe.board.dto.GetBoardListResponseDto;
 import com.nowgnodeel.boardbe.board.dto.UpdateBoardRequestDto;
 import com.nowgnodeel.boardbe.board.entity.Board;
 import com.nowgnodeel.boardbe.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +43,11 @@ public class BoardService {
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         board.patch(requestDto);
         return board;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<GetBoardListResponseDto> getBoardList(Pageable pageable) {
+        Page<Board> boardList = boardRepository.findAll(pageable);
+        return boardList.map(GetBoardListResponseDto::from);
     }
 }
