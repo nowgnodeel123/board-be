@@ -26,15 +26,15 @@ public class BoardController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<UpdateBoardResponseDto> updateBoard(@PathVariable Long id, @RequestBody UpdateBoardRequestDto requestDto) {
-        Board updateBoard = boardService.updateBoard(id, requestDto);
+    @PatchMapping("/{boardId}")
+    public ResponseEntity<UpdateBoardResponseDto> updateBoard(@PathVariable Long boardId, @RequestBody UpdateBoardRequestDto requestDto) {
+        Board updateBoard = boardService.updateBoard(boardId, requestDto);
         UpdateBoardResponseDto responseDto = UpdateBoardResponseDto.from(updateBoard);
         return ResponseEntity.ok(responseDto);
     }

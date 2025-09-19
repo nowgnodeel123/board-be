@@ -31,16 +31,16 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long id) {
-        if (!boardRepository.existsById(id)) {
+    public void deleteBoard(Long boardId) {
+        if (!boardRepository.existsById(boardId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Board not found");
         }
-        boardRepository.deleteById(id);
+        boardRepository.deleteById(boardId);
     }
 
     @Transactional
-    public Board updateBoard(Long id, UpdateBoardRequestDto requestDto) {
-        Board board = boardRepository.findById(id)
+    public Board updateBoard(Long boardId, UpdateBoardRequestDto requestDto) {
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         board.patch(requestDto);
         return board;
