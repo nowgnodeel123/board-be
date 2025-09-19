@@ -1,5 +1,6 @@
 package com.nowgnodeel.boardbe.board.service;
 
+import com.nowgnodeel.boardbe.board.common.Category;
 import com.nowgnodeel.boardbe.board.dto.CreateBoardRequestDto;
 import com.nowgnodeel.boardbe.board.dto.GetBoardListResponseDto;
 import com.nowgnodeel.boardbe.board.dto.UpdateBoardRequestDto;
@@ -46,8 +47,14 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<GetBoardListResponseDto> getBoardList(Pageable pageable) {
-        Page<Board> boardList = boardRepository.findAll(pageable);
+    public Page<GetBoardListResponseDto> getAllBoards(Pageable pageable, String category) {
+        Page<Board> boardList;
+        if (category == null && category.isBlank()) {
+            boardList = boardRepository.findAll(pageable);
+        } else {
+            Category categoryEnum = Category.valueOf(category.toUpperCase());
+            boardList = boardRepository.findByCategory(categoryEnum, pageable);
+        }
         return boardList.map(GetBoardListResponseDto::from);
     }
 }

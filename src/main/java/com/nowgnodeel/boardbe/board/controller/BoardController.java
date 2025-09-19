@@ -40,8 +40,8 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<GetBoardListResponseDto>> getBoardList(Pageable pageable) {
-        Page<GetBoardListResponseDto> getBoardList = boardService.getBoardList(pageable);
-        return ResponseEntity.ok(getBoardList);
+    public ResponseEntity<Page<GetBoardListResponseDto>> getAllBoards(Pageable pageable, @RequestParam(required = false) String category) {
+        Page<GetBoardListResponseDto> boardList = boardService.getAllBoards(pageable, category);
+        return ResponseEntity.ok(boardList);
     }
 }
