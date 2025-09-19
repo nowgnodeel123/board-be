@@ -49,7 +49,7 @@ public class BoardService {
     @Transactional(readOnly = true)
     public Page<GetBoardListResponseDto> getAllBoards(Pageable pageable, String category) {
         Page<Board> boardList;
-        if (category == null && category.isBlank()) {
+        if (category == null || category.isBlank()) {
             boardList = boardRepository.findAll(pageable);
         } else {
             Category categoryEnum = Category.valueOf(category.toUpperCase());
