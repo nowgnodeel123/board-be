@@ -3,10 +3,7 @@ package com.nowgnodeel.boardbe.comment.entity;
 import com.nowgnodeel.boardbe.board.entity.Board;
 import com.nowgnodeel.boardbe.global.entity.Timestamped;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -22,6 +19,8 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String comment;
 
-    @ManyToOne
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
     private Board board;
 }

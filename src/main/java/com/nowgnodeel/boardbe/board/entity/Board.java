@@ -31,9 +31,9 @@ public class Board extends Timestamped {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "board_id")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     public void patch(UpdateBoardRequestDto requestDto) {
@@ -46,5 +46,10 @@ public class Board extends Timestamped {
         if (requestDto.category() != null) {
             this.category = requestDto.category();
         }
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setBoard(this);
     }
 }
