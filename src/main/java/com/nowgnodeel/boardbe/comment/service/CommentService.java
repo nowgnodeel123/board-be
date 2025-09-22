@@ -26,4 +26,11 @@ public class CommentService {
         board.addComment(comment);
         return comment;
     }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+        commentRepository.deleteById(comment.getId());
+    }
 }
