@@ -3,6 +3,7 @@ package com.nowgnodeel.boardbe.comment.service;
 import com.nowgnodeel.boardbe.board.entity.Board;
 import com.nowgnodeel.boardbe.board.repository.BoardRepository;
 import com.nowgnodeel.boardbe.comment.dto.CreateCommentRequestDto;
+import com.nowgnodeel.boardbe.comment.dto.UpdateCommentRequestDto;
 import com.nowgnodeel.boardbe.comment.entity.Comment;
 import com.nowgnodeel.boardbe.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,14 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
         commentRepository.deleteById(comment.getId());
+    }
+
+    @Transactional
+    public Comment updateComment(Long boardId, Long commentId, UpdateCommentRequestDto requestDto) {
+        boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.patch(requestDto);
+        return comment;
     }
 }
