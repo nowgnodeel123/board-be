@@ -28,7 +28,9 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long boardId, Long commentId) {
+        boardRepository.findById(boardId)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
         commentRepository.deleteById(comment.getId());
