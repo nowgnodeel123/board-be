@@ -2,6 +2,8 @@ package com.nowgnodeel.boardbe.comment.controller;
 
 import com.nowgnodeel.boardbe.comment.dto.CreateCommentRequestDto;
 import com.nowgnodeel.boardbe.comment.dto.CreateCommentResponseDto;
+import com.nowgnodeel.boardbe.comment.dto.UpdateCommentRequestDto;
+import com.nowgnodeel.boardbe.comment.dto.UpdateCommentResponseDto;
 import com.nowgnodeel.boardbe.comment.entity.Comment;
 import com.nowgnodeel.boardbe.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +35,15 @@ public class CommentController {
             @PathVariable("commentId") Long commentId) {
         commentService.deleteComment(boardId, commentId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{commentId}")
+    public ResponseEntity<UpdateCommentResponseDto> updateComment(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("commentId") Long commentId,
+            @RequestBody UpdateCommentRequestDto requestDto) {
+        Comment comment = commentService.updateComment(boardId, commentId, requestDto);
+        UpdateCommentResponseDto responseDto = UpdateCommentResponseDto.from(comment);
+        return ResponseEntity.ok(responseDto);
     }
 }
