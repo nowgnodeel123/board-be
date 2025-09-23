@@ -1,6 +1,7 @@
 package com.nowgnodeel.boardbe.comment.entity;
 
 import com.nowgnodeel.boardbe.board.entity.Board;
+import com.nowgnodeel.boardbe.comment.dto.UpdateCommentRequestDto;
 import com.nowgnodeel.boardbe.global.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,4 +24,10 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    public void patch(UpdateCommentRequestDto requestDto) {
+        if (requestDto.comment() != null) {
+            this.comment = requestDto.comment();
+        }
+    }
 }
