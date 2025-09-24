@@ -1,12 +1,11 @@
 package com.nowgnodeel.boardbe.comment.controller;
 
-import com.nowgnodeel.boardbe.comment.dto.CreateCommentRequestDto;
-import com.nowgnodeel.boardbe.comment.dto.CreateCommentResponseDto;
-import com.nowgnodeel.boardbe.comment.dto.UpdateCommentRequestDto;
-import com.nowgnodeel.boardbe.comment.dto.UpdateCommentResponseDto;
+import com.nowgnodeel.boardbe.comment.dto.*;
 import com.nowgnodeel.boardbe.comment.entity.Comment;
 import com.nowgnodeel.boardbe.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +44,13 @@ public class CommentController {
         Comment comment = commentService.updateComment(boardId, commentId, requestDto);
         UpdateCommentResponseDto responseDto = UpdateCommentResponseDto.from(comment);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<GetCommentListResponseDto>> getAllComments(
+            @PathVariable Long boardId,
+            Pageable pageable) {
+        Page<GetCommentListResponseDto> commentList = commentService.getAllComments(boardId, pageable);
+        return ResponseEntity.ok(commentList);
     }
 }
